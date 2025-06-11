@@ -26,8 +26,9 @@ exports.login = async (req, res) => {
             expiresIn: process.env.JWT_EXPIRES_IN
         });
 
-        res.json({ message: 'Успішний вхід', userId: user.id });
+        res.json({ message: 'Успішний вхід', userId: user.id , token: token});
     } catch (error) {
+        console.error('Login error:', error);
         res.status(500).json({ message: 'Помилка входу' });
     }
 };
