@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Моніторинг роботів</title>
+    <style>
+        body { font-family: Arial; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        td, th { border: 1px solid #ccc; padding: 8px; }
+        th { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+<h1>Логи робота</h1>
+<table id="logsTable">
+    <thead>
+    <tr>
+        <th>ID Робота</th>
+        <th>Час</th>
+        <th>Широта</th>
+        <th>Довгота</th>
+        <th>Заряд</th>
+        <th>Статус</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+    const ROBOT_ID = 1; // змінити при потребі
+
+    fetch(`/api/logs`)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.querySelector('#logsTable tbody');
+            data.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+            <td>${log.robot_id}</td>
+            <td>${new Date(log.timestamp).toLocaleString()}</td>
+            <td>${log.latitude.toFixed(5)}</td>
+            <td>${log.longitude.toFixed(5)}</td>
+            <td>${log.battery_level}%</td>
+            <td>${log.status}</td>
+          `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => console.error('Помилка отримання логів:', err));
+</script>
+</body>
+</html>
