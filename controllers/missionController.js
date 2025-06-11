@@ -20,10 +20,7 @@ exports.createMission = async (req, res) => {
             status: 'pending',
         });
 
-        return res.status(201).json({
-            message: 'Місію створено успішно',
-            mission,
-        });
+        return res.status(201).json({message: 'Місію створено успішно', mission});
     } catch (error) {
         console.error('Помилка при створенні місії:', error);
         res.status(500).json({ message: 'Внутрішня помилка сервера' });

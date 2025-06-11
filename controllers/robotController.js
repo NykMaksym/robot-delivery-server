@@ -1,5 +1,15 @@
 const { Robot } = require('../models');
 
+exports.createRobot = async (req, res) => {
+    try {
+        const {name, serial_number} = req.body;
+        const robot = await Robot.create({ name, serial_number, status: 'idle' });
+        res.status(201).json({ message: 'Робота створено', robot});
+    } catch (err) {
+        res.status(500).json({ error: 'Помилка при створенні робота' });
+    }
+};
+
 exports.getRobots = async (req, res) => {
     try {
         const robots = await Robot.findAll();
