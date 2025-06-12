@@ -29,11 +29,25 @@ exports.createMission = async (req, res) => {
 
 exports.getMissions = async (req, res) => {
     try {
-        const missions = await Mission.findAll({
-            include: [{ model: Robot, attributes: ['id', 'name'] }]
-        });
+        let missions;
 
-        return res.status(200).json(missions);
+        if (req.user.role === 'admin') {
+            missions = await Mission.findAll({
+                include: [{ model: Robot, attributes: ['id', 'name', 'operator_id'] }]
+            });
+        } else if (req.user.role === 'operator') {
+            missions = await Mission.findAll({
+                include: [{
+                    model: Robot,
+                    attributes: ['id', 'name', 'operator_id'],
+                    where: { operator_id: req.user.id }
+                }]
+            });
+        } else {
+            return res.status(403).json({ message: 'Access denied' });
+        }
+
+        res.status(200).json(missions);
     } catch (error) {
         console.error('Помилка при отриманні місій:', error);
         res.status(500).json({ message: 'Внутрішня помилка сервера' });

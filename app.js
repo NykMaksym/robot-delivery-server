@@ -19,14 +19,14 @@ const missionRoutes = require('./routes/missions');
 const robotRoutes = require('./routes/robots');
 const logRoutes = require('./routes/logs');
 const alertRoutes = require('./routes/alerts');
-const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
 const authenticateToken = require("./middleware/auth");
 
 app.use('/api/missions', authenticateToken, missionRoutes);
 app.use('/api/robots', authenticateToken, robotRoutes);
 app.use('/api/logs', authenticateToken, logRoutes);
 app.use('/api/alerts', alertRoutes);
-app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 app.use((req, res, next) => {
     res.status(404).json({ message: 'Ресурс не знайдено' });

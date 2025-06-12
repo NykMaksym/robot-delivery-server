@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const {User} = require("./User");
 
 const Robot = sequelize.define('Robot', {
     name: {
@@ -17,9 +18,18 @@ const Robot = sequelize.define('Robot', {
         defaultValue: 'active',
     },
     last_seen: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATE
+    },
+    operator_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: {
+            model: User,
+            key: 'id'
+        },
+        onDelete: 'SET NULL'
     }
-}, {
+},{
     tableName: 'robots',
     timestamps: false,
 });

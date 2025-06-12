@@ -6,7 +6,7 @@ exports.register = async (req, res) => {
     const { username, password } = req.body;
     const hash = await bcrypt.hash(password, 10);
     try {
-        const user = await User.create({ username, password_hash: hash });
+        const user = await User.create({ username, password_hash: hash, role: 'operator' });
         res.status(201).json({ message: 'Користувача створено', user });
     } catch (error) {
         res.status(500).json({ message: 'Помилка створення користувача' });
@@ -30,5 +30,18 @@ exports.login = async (req, res) => {
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Помилка входу' });
+    }
+};
+
+exports.getOperators = async (req, res) => {
+    try {
+        const operators = await User.findAll({
+            where: { role: 'operator' },
+            attributes: ['id', 'username', 'created_at']
+        });
+        res.status(200).json(operators);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Не вдалося отримати список операторів' });
     }
 };

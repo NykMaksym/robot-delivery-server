@@ -6,6 +6,9 @@ const Mission = require('./Mission');
 const Log = require('./Log');
 const Alert = require('./Alert');
 
+User.hasMany(Robot, { foreignKey: 'operator_id', onDelete: 'SET NULL' });
+Robot.belongsTo(User, { foreignKey: 'operator_id' });
+
 Robot.hasMany(Mission, { foreignKey: 'robot_id', onDelete: 'CASCADE' });
 Mission.belongsTo(Robot, { foreignKey: 'robot_id' });
 
